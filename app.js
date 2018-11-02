@@ -2,7 +2,8 @@
 const app = require('express')();
 const bodyParser=require('body-parser');
 const mongoose = require('mongoose');
-
+const http = require('http');
+var io = require('socket.io')(http);
 
 const routes = require('./routes');
 const PORT = process.env.PORT || 2019;
@@ -35,6 +36,9 @@ app.use(function (req, res, next) {
 
 //  Connect all our routes to our application
 app.use('/', routes);
+io.on('connection', function(socket){
+  console.log('a user connected');
+});
 
 // error handler
 // define as the last app.use callback

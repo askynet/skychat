@@ -15,9 +15,11 @@
     "express": "^4.16.4",
     "express-session": "^1.15.6",
     "fs": "0.0.1-security",
+    "http": "0.0.0",
     "mongoose": "^5.3.8",
     "passport": "^0.4.0",
     "path": "^0.12.7",
-    "randomstring": "^1.1.5"
+    "randomstring": "^1.1.5",
+    "socket.io": "^2.1.1"
   }
 }

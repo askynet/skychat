@@ -1,5 +1,10 @@
 var Rooms = require('./rooms.model');
+var mongoose=require('mongoose');
 
+var express = require("express")
+var app = express()
+var http = require("http").Server(app)
+var io = require("socket.io")(http)
 function respondWithResult(res, statusCode) {
     statusCode = statusCode || 200;
     return function(entity) {
@@ -38,15 +43,15 @@ function respondWithResult(res, statusCode) {
     };
   }
   
-  // Gets a list of Roomss
-  const index= function index(req, res) {
+  // Gets a list of Rooms
+  module.exports.index= function index(req, res) {
     return Rooms.find().exec()
       .then(respondWithResult(res))
       .catch(handleError(res));
   }
   
   // Creates a new Rooms in the DB
-  const create= function create(req, res) {
+  module.exports.create= function create(req, res) {
        console.log(req.body);
       var room={
         owner:req.body.owner,
@@ -61,15 +66,26 @@ function respondWithResult(res, statusCode) {
             user:req.body.owner
           }
         ]
-
       }
     return Rooms.create(room)
-      .then(respondWithResult(res, 201))
+      .then(room=>{
+        console.log(room);
+        res.sendStatus(200).json(room);
+        io.emit("rooms",room);
+      })
       .catch(handleError(res));
   }
-  
-  module.exports={
-      index,
-      create
+
+  module.exports.userrooms=function userrooms(req,res){
+    try{
+    var userid=mongoose.Types.ObjectId(req.params.userid);
+    console.log(userid);
+    return Rooms.find({ members: { $elemMatch: { user: userid } } } ).exec()
+    .then(respondWithResult(res))
+    .catch(handleError(res));
+  }catch(e){
+    res.status(204).end();
   }
+  }
+  
   

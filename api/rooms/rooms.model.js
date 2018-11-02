@@ -17,7 +17,8 @@ var RoomsSchema = new mongoose.Schema({
   ],
   private:{type:Boolean,default:false},
   active:{type:Boolean,default:true},
-  createon:{type:Date,default: Date.now}
+  createon:{type:Date,default: Date.now},
+  updateon:{type:Date,default: Date.now},
 });
 
 module.exports= mongoose.model('Rooms', RoomsSchema);

@@ -1,4 +1,4 @@
-const routes = require('express').Router();
+var routes = require('express').Router();
 const rooms = require('../api/rooms');
 const user =require('../api/user');
 const messages=require('../api/messages');
